@@ -1,6 +1,11 @@
 package main
 
-import rl "github.com/gen2brain/raylib-go/raylib"
+import (
+	"os"
+	"path/filepath"
+
+	rl "github.com/gen2brain/raylib-go/raylib"
+)
 
 var (
 	penguinSprite rl.Texture2D
@@ -29,7 +34,13 @@ const (
 )
 
 func load() {
-	penguinSprite = rl.LoadTexture("sprites/penguin.png")
+	baseDir, err := os.Executable()
+	if err != nil {
+		panic("what happened? " + err.Error())
+	}
+	baseDir = filepath.Dir(baseDir)
+
+	penguinSprite = rl.LoadTexture(filepath.Join(baseDir, "sprites/penguin.png"))
 	spriteRect = rl.NewRectangle(0, spriteFaceDir*spriteHeight, 24, 32)
 	playerRec = rl.NewRectangle(300, 300, 48, 64)
 }
