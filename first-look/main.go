@@ -16,6 +16,8 @@ var (
 	spriteFaceDir = faceDown
 	spriteSeq     = 0
 	keyDownCnt    = 0
+
+	music rl.Music
 )
 
 const (
@@ -41,12 +43,19 @@ func load() {
 	baseDir = filepath.Dir(baseDir)
 
 	penguinSprite = rl.LoadTexture(filepath.Join(baseDir, "sprites/penguin.png"))
+
+	music = rl.LoadMusicStream(filepath.Join(baseDir, "musics/some-random-music.mp3"))
+	rl.SetMusicVolume(music, 1.0)
+	rl.PlayMusicStream(music)
+
 	spriteRect = rl.NewRectangle(0, spriteFaceDir*spriteHeight, 24, 32)
 	playerRec = rl.NewRectangle(300, 300, 48, 64)
 }
 
 func unload() {
 	rl.UnloadTexture(penguinSprite)
+	rl.UnloadMusicStream(music)
+	rl.CloseAudioDevice()
 }
 
 func getInput() {
@@ -85,6 +94,7 @@ func main() {
 	rl.InitWindow(600, 600, "Hello, World!")
 	rl.SetExitKey(0)
 	rl.SetTargetFPS(60)
+	rl.InitAudioDevice()
 
 	load()
 
@@ -93,6 +103,8 @@ func main() {
 
 		rl.BeginDrawing()
 		rl.ClearBackground(rl.RayWhite)
+
+		rl.UpdateMusicStream(music)
 
 		drawScene()
 
