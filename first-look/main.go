@@ -41,7 +41,7 @@ func load() {
 	if err != nil {
 		panic("what happened? " + err.Error())
 	}
-	baseDir = filepath.Dir(baseDir)
+	baseDir = filepath.Dir(filepath.Dir(baseDir))
 
 	penguinSprite = rl.LoadTexture(filepath.Join(baseDir, "sprites/penguin.png"))
 
